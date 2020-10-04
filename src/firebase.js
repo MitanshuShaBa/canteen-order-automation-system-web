@@ -7,12 +7,14 @@ const firebaseApp = firebase.initializeApp({
   projectId: "kjsieit-canteen",
   storageBucket: "kjsieit-canteen.appspot.com",
   messagingSenderId: "578576433150",
-  appId: "1:578576433150:web:eda7c01ed910f2106b4aaf",
-  measurementId: "G-RCBT5B9574",
+  appId: "1:578576433150:web:745a72627aecde0f6b4aaf",
+  measurementId: "G-LP1VWK1R4K",
 });
+firebase.analytics();
 
 const db = firebaseApp.firestore();
 const auth = firebaseApp.auth();
 const provider = new firebase.auth.GoogleAuthProvider();
+const FieldValue = firebase.firestore.FieldValue;
 
-export { db, auth, provider };
+export { db, auth, provider, FieldValue };

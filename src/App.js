@@ -1,23 +1,70 @@
-import { Box } from "@material-ui/core";
 import React, { useEffect } from "react";
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link,
-  Redirect,
   useHistory,
 } from "react-router-dom";
 import Home from "./Home";
 import Register from "./Register";
 import Account from "./AccountPages/Account";
 import { useStateValue } from "./StateProvider";
-import { auth } from "./firebase";
+import { auth, db } from "./firebase";
 import "./App.css";
 import Navbar from "./Navbar";
+import Login from "./Login";
+
+//  useEffect(() => {
+//    if (user) {
+//      let userDocument = db.collection("users").doc(user.email).get();
+//      dispatch({
+//        type: "UPDATE_USERDOC",
+//        userDoc: userDocument,
+//      });
+//    }
+//  }, [user]);
+
+function getUserDoc(email) {
+  let userDoc;
+  db.collection("users")
+    .doc(email)
+    .get()
+    .then((doc) => doc.data())
+    .catch((error) => console.log(error));
+}
 
 export default function App() {
-  const [{ user }, dispatch] = useStateValue();
+  const [{ user, cart, userDoc }, dispatch] = useStateValue();
+
+  useEffect(() => {
+    if (user) {
+      // USE FOR PRODUCTION
+      // setInterval(() => {
+      //   db.collection("users")
+      //     .doc(user.email)
+      //     .get()
+      //     .then((doc) => {
+      //       dispatch({
+      //         type: "UPDATE_USERDOC",
+      //         userDoc: doc.data(),
+      //       });
+      //     })
+      //     .catch((error) => console.log(error));
+      // }, 120000); // 2 minutes
+
+      //USE FOR DEVELOPMENT
+      db.collection("users")
+        .doc(user.email)
+        .get()
+        .then((doc) => {
+          dispatch({
+            type: "UPDATE_USERDOC",
+            userDoc: doc.data(),
+          });
+        })
+        .catch((error) => console.log(error));
+    }
+  }, [user]);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((authUser) => {
@@ -43,7 +90,9 @@ export default function App() {
   }, []);
 
   console.log("user is", user && user.providerData[0].email);
-  // console.log(user)
+  console.log(user);
+  console.log(userDoc);
+  console.log(cart);
 
   return (
     <Router>
@@ -62,18 +111,22 @@ export default function App() {
           <Route path="/logout">
             <Logout />
           </Route>
+          <Route path="/login">
+            <Login />
+          </Route>
           <Route path="/">
             <Home />
           </Route>
         </Switch>
         <footer
           style={{
-            position: "fixed",
+            position: 'relative',
             left: 0,
             bottom: 0,
             width: "100%",
             color: "white",
             textAlign: "right",
+            marginTop: '15vh'
           }}
         >
           <a href="https://www.freepik.com/vectors/logo">

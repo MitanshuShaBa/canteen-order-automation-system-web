@@ -95,7 +95,7 @@ const Register = () => {
     //   .catch((e) => alert(e.message));
 
     auth
-      .signInWithPopup(provider.addScope("email"))
+      .signInWithPopup(provider)
       .then((auth) => {
         console.log("logged in", auth.user.providerData[0].email);
 

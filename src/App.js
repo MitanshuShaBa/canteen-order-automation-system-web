@@ -13,6 +13,7 @@ import { auth, db } from "./firebase";
 import "./App.css";
 import Navbar from "./Navbar";
 import Login from "./Login";
+import Cart from "./Cart";
 
 //  useEffect(() => {
 //    if (user) {
@@ -92,7 +93,7 @@ export default function App() {
   console.log("user is", user && user.providerData[0].email);
   console.log(user);
   console.log(userDoc);
-  console.log(cart);
+  // console.log(cart);
 
   return (
     <Router>
@@ -114,19 +115,22 @@ export default function App() {
           <Route path="/login">
             <Login />
           </Route>
+          <Route path="/cart">
+            <Cart />
+          </Route>
           <Route path="/">
             <Home />
           </Route>
         </Switch>
         <footer
           style={{
-            position: 'relative',
+            position: "relative",
             left: 0,
             bottom: 0,
             width: "100%",
             color: "white",
             textAlign: "right",
-            marginTop: '15vh'
+            marginTop: "15vh",
           }}
         >
           <a href="https://www.freepik.com/vectors/logo">

@@ -152,7 +152,7 @@ function Navbar() {
               KJSIEIT-Canteen
             </Link>
           </Typography>
-          <IconButton aria-label="cart">
+          <IconButton onClick={()=>history.push('/cart')}>
             <StyledBadge
               badgeContent={cart ? Object.keys(cart).length : 0}
               color="primary"

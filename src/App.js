@@ -68,6 +68,23 @@ export default function App() {
   }, [user]);
 
   useEffect(() => {
+    let menuSnapshot = [];
+
+    const unsubscribe = db.collection("menu").onSnapshot(
+      (querySnapshot) => {
+        querySnapshot.forEach((doc) => menuSnapshot.push(doc.data()));
+        console.log("menu updated", menuSnapshot);
+        dispatch({
+          type: "UPDATE_MENU",
+          menu: menuSnapshot,
+        });
+      },
+      (error) => console.log(error)
+    );
+    return () => unsubscribe();
+  }, []);
+
+  useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((authUser) => {
       if (authUser) {
         //user logged in
@@ -90,9 +107,9 @@ export default function App() {
     };
   }, []);
 
-  console.log("user is", user && user.providerData[0].email);
-  console.log(user);
-  console.log(userDoc);
+  // console.log("user is", user && user.providerData[0].email);
+  // console.log(user);
+  // console.log(userDoc);
   // console.log(cart);
 
   return (

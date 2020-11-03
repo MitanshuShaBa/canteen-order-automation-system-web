@@ -2,6 +2,7 @@ export const initialState = {
   user: null,
   cart: {},
   userDoc: {},
+  menu: [],
 };
 
 function reducer(state, action) {
@@ -21,6 +22,11 @@ function reducer(state, action) {
         ...state,
         userDoc: action.userDoc,
         cart: action.userDoc.cart,
+      };
+    case "UPDATE_MENU":
+      return {
+        ...state,
+        menu: action.menu,
       };
     default:
       return state;

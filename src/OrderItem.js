@@ -14,7 +14,12 @@ import RemoveIcon from "@material-ui/icons/Remove";
 import { useStateValue } from "./StateProvider";
 import { db } from "./firebase";
 
-const OrderItem = ({ image = categorylogo, orderItem = "Order Item" }) => {
+const OrderItem = ({
+  image = categorylogo,
+  orderItem = "dosa",
+  price = 15,
+  category='south indian',
+}) => {
   const [{ user, cart }, dispatch] = useStateValue();
 
   const handleAddCart = (e) => {
@@ -27,7 +32,6 @@ const OrderItem = ({ image = categorylogo, orderItem = "Order Item" }) => {
           ...cart,
           [orderItem]: {
             quantity: 1,
-            price: 15,
           },
         },
       });
@@ -38,7 +42,6 @@ const OrderItem = ({ image = categorylogo, orderItem = "Order Item" }) => {
         ...cart,
         [orderItem]: {
           quantity: 2,
-          price: 15,
         },
       },
     });
@@ -70,6 +73,8 @@ const OrderItem = ({ image = categorylogo, orderItem = "Order Item" }) => {
         <div>
           <CardContent>
             <Typography>{orderItem}</Typography>
+            <Typography>₹{price}</Typography>
+            <Typography>{category}</Typography>
           </CardContent>
           <CardActions>
             {/* TODO */}

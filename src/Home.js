@@ -7,8 +7,8 @@ import HomeCarousel from "./HomeCarousel";
 import OrderItem from "./OrderItem";
 import { useStateValue } from "./StateProvider";
 
-function Home() {
-  const [{ user, cart }, dispatch] = useStateValue();
+const Home = () => {
+  const [{ user, cart, menu }, dispatch] = useStateValue();
   let theme = useTheme();
 
   return (
@@ -39,15 +39,24 @@ function Home() {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          marginTop:'4vh'
+          marginTop: "4vh",
         }}
       >
-        <OrderItem />
+        {menu.map(({ category, price, name }, key) => {
+          return (
+            <OrderItem
+              key={key}
+              category={category}
+              price={price}
+              orderItem={name}
+            />
+          );
+        })}
       </div>
 
       <div style={{ margin: "5vh" }}></div>
     </Container>
   );
-}
+};
 
 export default Home;

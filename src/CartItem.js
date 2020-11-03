@@ -9,7 +9,7 @@ import {
   makeStyles,
   Typography,
 } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import categorylogo from "./img/3223367.jpg";
 import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
@@ -25,11 +25,23 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const CartItem = ({ image = categorylogo, orderItem = "Order Item" }) => {
-  const [{ user, cart }, dispatch] = useStateValue();
+  const [{ user, cart, menu }, dispatch] = useStateValue();
   const [quantity, setQuantity] = useState(1);
+  const [price, setPrice] = useState(10);
   let classes = useStyles();
   let timerTime = 3000;
   let inputTimer;
+
+  useEffect(() => {
+    setQuantity(cart[orderItem]["quantity"]);
+    // setPrice(menu.find())
+    let tempMenu = menu.find((item) => {
+      if (item.name == orderItem) {
+        return true;
+      }
+    });
+    setPrice(tempMenu.price);
+  }, [user, cart]);
 
   const updateQuantity = () => {
     let item = cart[orderItem];
@@ -57,7 +69,6 @@ const CartItem = ({ image = categorylogo, orderItem = "Order Item" }) => {
           ...cart,
           [orderItem]: {
             quantity: 1,
-            price: 15,
           },
         },
       });
@@ -67,8 +78,7 @@ const CartItem = ({ image = categorylogo, orderItem = "Order Item" }) => {
       cart: {
         ...cart,
         [orderItem]: {
-          quantity: 2,
-          price: 15,
+          quantity: 1,
         },
       },
     });
@@ -116,6 +126,9 @@ const CartItem = ({ image = categorylogo, orderItem = "Order Item" }) => {
                   }
                 }}
               />
+            </Typography>
+            <Typography>
+              {quantity} X ₹{price} = ₹{quantity * price}
             </Typography>
           </CardContent>
           <CardActions>

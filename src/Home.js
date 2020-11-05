@@ -42,15 +42,17 @@ const Home = () => {
           marginTop: "4vh",
         }}
       >
-        {menu.map(({ category, price, name }, key) => {
-          return (
-            <OrderItem
-              key={key}
-              category={category}
-              price={price}
-              orderItem={name}
-            />
-          );
+        {menu.map(({ category, price, name, isAvailable }, key) => {
+          if (isAvailable) {
+            return (
+              <OrderItem
+                key={key}
+                category={category}
+                price={price}
+                orderItem={name}
+              />
+            );
+          }
         })}
       </div>
 

@@ -142,104 +142,104 @@ const Register = () => {
   };
 
   return (
-    <>
-      <Container maxwidth="md">
-        <div style={{ marginTop: "5vh" }}></div>
-        <Typography color="secondary" variant="h3">
-          Create Account
-        </Typography>
-        <form autoComplete="off">
-          <div style={{ display: "flex", flexDirection: "column" }}>
-            <Input
-              autoFocus
-              color="secondary"
-              name="name"
-              placeholder="Name"
-              // fullWidth
-              required
-              value={state.name}
+    <Container maxWidth="sm">
+      <div style={{ marginTop: "5vh" }}></div>
+      <Typography color="secondary" variant="h3">
+        Create Account
+      </Typography>
+      <form autoComplete="off">
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <Input
+            autoFocus
+            color="secondary"
+            name="name"
+            placeholder="Name"
+            // fullWidth
+            required
+            value={state.name}
+            onChange={handleChange}
+          />
+          <Input
+            color="secondary"
+            name="email"
+            placeholder="Email"
+            // fullWidth
+            type="email"
+            value={state.email}
+            onChange={handleChange}
+          />
+          <Input
+            color="secondary"
+            className={classes.numberField}
+            name="number"
+            placeholder="Phone Number"
+            // fullWidth
+            required
+            type="tel"
+            value={state.number}
+            onChange={handleChange}
+          />
+          <Input
+            color="secondary"
+            name="password"
+            placeholder="Password"
+            // fullWidth
+            type="password"
+            value={state.password}
+            onChange={handleChange}
+          />
+          <FormControl style={{ marginTop: 8 }} component="fieldset">
+            <FormLabel color="secondary" component="legend">
+              Role
+            </FormLabel>
+            <RadioGroup
+              aria-label="role"
+              name="role"
+              value={state.role}
               onChange={handleChange}
-            />
-            <Input
-              color="secondary"
-              name="email"
-              placeholder="Email"
-              // fullWidth
-              type="email"
-              value={state.email}
-              onChange={handleChange}
-            />
-            <Input
-              color="secondary"
-              className={classes.numberField}
-              name="number"
-              placeholder="Phone Number"
-              // fullWidth
-              required
-              type="tel"
-              value={state.number}
-              onChange={handleChange}
-            />
-            <Input
-              color="secondary"
-              name="password"
-              placeholder="Password"
-              // fullWidth
-              type="password"
-              value={state.password}
-              onChange={handleChange}
-            />
-            <FormControl style={{ marginTop: 4 }} component="fieldset">
-              <FormLabel color="secondary" component="legend">
-                Role
-              </FormLabel>
-              <RadioGroup
-                aria-label="role"
-                name="role"
-                value={state.role}
-                onChange={handleChange}
-              >
-                <FormControlLabel
-                  value="student"
-                  control={<Radio />}
-                  label="Student"
-                />
-                <FormControlLabel
-                  value="faculty"
-                  control={<Radio />}
-                  label="Faculty"
-                />
-              </RadioGroup>
-            </FormControl>
-          </div>
-          <div
-            style={{
-              marginTop: "2vh",
-              display: "flex",
-            }}
+            >
+              <FormControlLabel
+                value="student"
+                control={<Radio />}
+                label="Student"
+              />
+              <FormControlLabel
+                value="faculty"
+                control={<Radio />}
+                label="Faculty"
+              />
+            </RadioGroup>
+          </FormControl>
+        </div>
+        <div
+          style={{
+            marginTop: "2vh",
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
+          }}
+        >
+          <Button
+            style={{ margin: "1vh" }}
+            variant="contained"
+            color="secondary"
+            type="submit"
+            onClick={handleSubmit}
           >
-            <Button
-              style={{ margin: "1vh" }}
-              variant="contained"
-              color="secondary"
-              type="submit"
-              onClick={handleSubmit}
-            >
-              Register
-            </Button>
-            <Button
-              style={{ margin: "1vh" }}
-              variant="contained"
-              color="secondary"
-              type="submit"
-              onClick={handleSubmitGoogle}
-            >
-              Register With Google
-            </Button>
-          </div>
-        </form>
-      </Container>
-    </>
+            Register
+          </Button>
+          <Button
+            style={{ margin: "1vh" }}
+            variant="contained"
+            color="secondary"
+            type="submit"
+            onClick={handleSubmitGoogle}
+          >
+            Register With Google
+          </Button>
+        </div>
+      </form>
+    </Container>
   );
 };
 

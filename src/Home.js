@@ -1,24 +1,19 @@
 import {
   Button,
-  Container,
-  Input,
+  Grid,
   InputAdornment,
   TextField,
   Typography,
   useTheme,
 } from "@material-ui/core";
-import { AccountCircle } from "@material-ui/icons";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import CategoryCard from "./CategoryCard";
-import { auth, db } from "./firebase";
-import HomeCarousel from "./HomeCarousel";
 import OrderItem from "./OrderItem";
 import { useStateValue } from "./StateProvider";
 import SearchIcon from "@material-ui/icons/Search";
 
 const Home = () => {
-  const [{ user, cart, menu }, dispatch] = useStateValue();
+  const [{ user, menu }] = useStateValue();
   let theme = useTheme();
   const [searchItem, setSearchItem] = useState("");
   const [menuFiltered, setMenuFiltered] = useState(menu);
@@ -53,9 +48,9 @@ const Home = () => {
   };
 
   return (
-    <Container style={{ paddingTop: "2vh" }}>
+    <Grid style={{ padding: "2vh" }}>
       {user && (
-        <>
+        <Grid item>
           <Typography
             variant="h4"
             style={{
@@ -63,34 +58,50 @@ const Home = () => {
               marginBottom: "2vh",
             }}
           >
-            Welcome {user.displayName.split(" ")[0]}! 
+            Welcome {user.displayName.split(" ")[0]}!
           </Typography>
-        </>
+        </Grid>
       )}
       {/* <HomeCarousel /> */}
-      <div
-        style={{ display: "flex", padding: 2, justifyContent: "space-evenly" }}
-      >
-        <CategoryCard
-          title="Snacks"
-          imageURL="https://storage.googleapis.com/kjsieit-canteen.appspot.com/menu_items/snacks/sandwich.jpeg"
-          onCategory={handleCategory}
-        />
-        <CategoryCard
-          title="Chinese"
-          imageURL="https://storage.googleapis.com/kjsieit-canteen.appspot.com/menu_items/chinese/noodles.jpeg"
-          onCategory={handleCategory}
-        />
-        <CategoryCard
-          title="South Indian"
-          imageURL="https://storage.googleapis.com/kjsieit-canteen.appspot.com/menu_items/south_indian/idli.jpg"
-          onCategory={handleCategory}
-        />
-        <CategoryCard
-          title="Beverages"
-          imageURL="https://storage.googleapis.com/kjsieit-canteen.appspot.com/menu_items/beverages/pepsi.jpg"
-          onCategory={handleCategory}
-        />
+      <div>
+        <Grid container item justify="center" spacing={2}>
+          <Grid container item xs={6} sm={3} justify="center">
+            <Grid item>
+              <CategoryCard
+                title="Snacks"
+                imageURL="https://storage.googleapis.com/kjsieit-canteen.appspot.com/menu_items/snacks/sandwich.jpeg"
+                onCategory={handleCategory}
+              />
+            </Grid>
+          </Grid>
+          <Grid container item xs={6} sm={3} justify="center">
+            <Grid item>
+              <CategoryCard
+                title="Chinese"
+                imageURL="https://storage.googleapis.com/kjsieit-canteen.appspot.com/menu_items/chinese/noodles.jpeg"
+                onCategory={handleCategory}
+              />
+            </Grid>
+          </Grid>
+          <Grid container item xs={6} sm={3} justify="center">
+            <Grid item>
+              <CategoryCard
+                title="South Indian"
+                imageURL="https://storage.googleapis.com/kjsieit-canteen.appspot.com/menu_items/south_indian/idli.jpg"
+                onCategory={handleCategory}
+              />
+            </Grid>
+          </Grid>
+          <Grid container item xs={6} sm={3} justify="center">
+            <Grid item>
+              <CategoryCard
+                title="Beverages"
+                imageURL="https://storage.googleapis.com/kjsieit-canteen.appspot.com/menu_items/beverages/pepsi.jpg"
+                onCategory={handleCategory}
+              />
+            </Grid>
+          </Grid>
+        </Grid>
       </div>
       <div
         style={{
@@ -153,7 +164,7 @@ const Home = () => {
       </div>
 
       <div style={{ margin: "5vh" }}></div>
-    </Container>
+    </Grid>
   );
 };
 

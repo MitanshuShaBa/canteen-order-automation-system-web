@@ -3,6 +3,7 @@ import React from "react";
 import AccountBody from "./AccountBody";
 import AccountHeader from "./AccountHeader";
 import { useStateValue } from "../StateProvider";
+import { Link } from "react-router-dom";
 
 const Account = () => {
   const [{ user }] = useStateValue();
@@ -15,7 +16,9 @@ const Account = () => {
           <AccountBody />
         </>
       ) : (
-        <h2>Login</h2>
+        <h2>
+          <Link to="/login">Login</Link>
+        </h2>
       )}
     </Container>
   );

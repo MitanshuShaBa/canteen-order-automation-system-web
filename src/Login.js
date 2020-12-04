@@ -98,6 +98,8 @@ const Login = () => {
           style={{
             marginTop: "2vh",
             display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
           }}
         >
           <Button

@@ -158,7 +158,7 @@ const Cart = () => {
             type: "UPDATE_CART",
             cart: {},
           });
-        }, 1000);
+        }, 5000);
         // db.collection("users")
         //   .doc(user.email)
         //   .collection("my_orders")

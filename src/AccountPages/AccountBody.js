@@ -10,39 +10,6 @@ import Order from "./Order";
 import { db } from "../firebase";
 import { useStateValue } from "../StateProvider";
 
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`vertical-tabpanel-${index}`}
-      aria-labelledby={`vertical-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box p={3}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
-
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.any.isRequired,
-  value: PropTypes.any.isRequired,
-};
-
-function a11yProps(index) {
-  return {
-    id: `vertical-tab-${index}`,
-    "aria-controls": `vertical-tabpanel-${index}`,
-  };
-}
-
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -97,7 +64,6 @@ export default function AccountBody() {
         myOrders.sort((a, b) => b.placed_at.seconds - a.placed_at.seconds);
         setActiveOrders(myOrders);
       });
-
   }, []);
 
   return (
@@ -119,28 +85,6 @@ export default function AccountBody() {
       {orders.map((order) => (
         <Order key={order.id} order={order} />
       ))}
-
-      {/* <div style={{ flex: smUP ? "0.7" : "0.2" }}> */}
-      {/* <div style={{ flex: "0.2" }}>
-        <Tabs
-          orientation="vertical"
-          value={value}
-          onChange={handleChange}
-          aria-label="Vertical tabs "
-          className={classes.tabs}
-        >
-          <Tab label="My Orders" wrapped {...a11yProps(0)} />
-          <Tab label="My Favourites" wrapped {...a11yProps(1)} />
-        </Tabs>
-      </div>
-      <div>
-        <TabPanel value={value} index={0}>
-          Item One
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          Item Two
-        </TabPanel>
-      </div> */}
     </div>
   );
 }

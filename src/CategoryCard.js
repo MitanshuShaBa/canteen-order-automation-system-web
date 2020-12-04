@@ -13,13 +13,7 @@ import categorylogo from "./img/3223367.jpg";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: 200,
-    [theme.breakpoints.down("md")]: {
-      width: 150,
-    },
-    [theme.breakpoints.down("sm")]: {
-      width: 50,
-    },
+    width: 170,
   },
   media: {
     height: 140,

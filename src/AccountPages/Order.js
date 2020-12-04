@@ -39,29 +39,6 @@ const Order = ({ order }) => {
   const [expanded, setExpanded] = useState(false);
   const orderRef = useRef(null);
 
-  // const [order, setOrder] = useState({
-  //   total_amount: 80,
-  //   username: "Mit",
-  //   status: "completed",
-  //   razorpay_payment_id: "pay_G5otgt9ZT0ri3i",
-  //   ordered_by: "zyz@gmail.com",
-  //   payment_status: "paid",
-  //   payment_type: "digital",
-  //   razorpay_order_id: "order_G5ospIZuODWpVF",
-  //   placed_at: { seconds: 1606398678, nanoseconds: 972000000 },
-  //   bill: {
-  //     "Aaloo Tikki": { price: 70, quantity: 1 },
-  //     Chai: { quantity: 1, price: 10 },
-  //   },
-  // });
-
-  // useEffect(() => {
-  //   db.collection("active_orders")
-  //     .doc("azzYbZuw8se1k2sjQws6")
-  //     .get()
-  //     .then((doc) => console.log(JSON.stringify(doc.data())));
-  // }, []);
-
   useEffect(() => {
     if (expanded) {
       orderRef.current.scrollIntoView();
@@ -71,17 +48,21 @@ const Order = ({ order }) => {
   return (
     <Card ref={orderRef} style={{ marginTop: "2vh" }}>
       <CardContent>
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "space-between",
+          }}
+        >
           <Typography variant="h5">Order No. #{order.id}</Typography>
-          <div style={{ display: "flex" }}>
+          <div style={{ display: "flex", alignItems: "end" }}>
             <Typography>
               {new Date(order.placed_at.seconds * 1000).toLocaleString()}
-              {/* TODO: Change timestamp porcessing to firebase when testing done  */}
             </Typography>
             <IconButton
               onClick={() => {
                 setExpanded(!expanded);
-                // orderRef.current.scrollIntoView();
               }}
               aria-expanded={expanded}
               aria-label="show more"
@@ -92,8 +73,8 @@ const Order = ({ order }) => {
           </div>
         </div>
         <Collapse in={expanded} timeout="auto" unmountOnExit>
-          <CardContent>
-            <Table style={{ minWidth: 400 }} aria-label="order table">
+          <CardContent style={{ overflow: "auto" }}>
+            <Table aria-label="order table">
               <TableHead>
                 <TableRow>
                   <StyledTableCell>Name</StyledTableCell>

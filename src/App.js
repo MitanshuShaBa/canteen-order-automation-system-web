@@ -129,32 +129,34 @@ export default function App() {
     <Router>
       <div>
         <Navbar />
-        <Switch>
-          {/* <Route path="/about">
+        <div style={{ minHeight: window.innerHeight }}>
+          <Switch>
+            {/* <Route path="/about">
             <About />
           </Route> */}
-          <Route path="/account">
-            <Account />
-          </Route>
-          <Route path="/register">
-            <Register />
-          </Route>
-          <Route path="/logout">
-            <Logout />
-          </Route>
-          <Route path="/login">
-            <Login />
-          </Route>
-          <Route path="/cart">
-            <Cart />
-          </Route>
-          <Route path="/">
-            <Home />
-          </Route>
-        </Switch>
+            <Route path="/account">
+              <Account />
+            </Route>
+            <Route path="/register">
+              <Register />
+            </Route>
+            <Route path="/logout">
+              <Logout />
+            </Route>
+            <Route path="/login">
+              <Login />
+            </Route>
+            <Route path="/cart">
+              <Cart />
+            </Route>
+            <Route path="/">
+              <Home />
+            </Route>
+          </Switch>
+        </div>
         <footer
           style={{
-            position: 'fixed',
+            position: "static",
             right: 0,
             bottom: 0,
             width: "100%",

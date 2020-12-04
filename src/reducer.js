@@ -21,7 +21,7 @@ function reducer(state, action) {
       return {
         ...state,
         userDoc: action.userDoc,
-        cart: action.userDoc.cart,
+        cart: action.userDoc.cart ? action.userDoc.cart : {},
       };
     case "UPDATE_MENU":
       return {

@@ -3,7 +3,11 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-import { createMuiTheme, responsiveFontSizes, ThemeProvider } from "@material-ui/core";
+import {
+  createMuiTheme,
+  responsiveFontSizes,
+  ThemeProvider,
+} from "@material-ui/core";
 import { StateProvider } from "./StateProvider";
 import reducer, { initialState } from "./reducer";
 
@@ -26,6 +30,13 @@ let theme = createMuiTheme({
       '"Segoe UI Emoji"',
       '"Segoe UI Symbol"',
     ].join(","),
+  },
+  breakpoints: {
+    values: {
+      tablet: 640,
+      laptop: 1024,
+      desktop: 1280,
+    },
   },
 });
 

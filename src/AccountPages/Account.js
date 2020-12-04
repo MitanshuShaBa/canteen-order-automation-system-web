@@ -8,7 +8,7 @@ const Account = () => {
   const [{ user }] = useStateValue();
 
   return (
-    <Container style={{marginTop:'4vh'}}>
+    <Container style={{ marginTop: "4vh" }}>
       {user ? (
         <>
           <AccountHeader />

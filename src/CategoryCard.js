@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("md")]: {
       width: 150,
     },
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down("sm")]: {
       width: 50,
     },
   },
@@ -26,19 +26,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CategoryCard = () => {
+const CategoryCard = ({
+  title = "Category",
+  imageURL = categorylogo,
+  onCategory,
+}) => {
   const classes = useStyles();
+  const handleCategoryClick = () => {
+    onCategory(title);
+  };
   return (
     <Card className={classes.root} raised>
-      <CardActionArea>
-        <CardMedia
-          className={classes.media}
-          image={categorylogo}
-          title="Category Logo"
-        />
+      <CardActionArea onClick={handleCategoryClick}>
+        <CardMedia className={classes.media} image={imageURL} title={title} />
         <CardContent>
           <Typography variant="h5" align="center">
-            Burgers
+            {title}
           </Typography>
         </CardContent>
         {/* <Box py={3} px={2} className={classes.content}> */}

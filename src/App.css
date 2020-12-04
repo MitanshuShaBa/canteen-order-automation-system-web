@@ -1,3 +1,11 @@
-*{
+* {
   margin: 0;
+}
+
+p.capitalize {
+  text-transform: capitalize;
+}
+
+html {
+  scroll-behavior: smooth;
 }

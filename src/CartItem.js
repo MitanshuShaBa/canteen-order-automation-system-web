@@ -100,13 +100,30 @@ const CartItem = ({ image = categorylogo, orderItem = "Order Item" }) => {
   };
 
   return (
-    <Card raised>
-      <div style={{ display: "flex" }}>
-        <img
-          style={{ height: 140, flex: 0.2 }}
-          src={image}
-          alt="Category Logo"
-        />
+    <Card style={{ marginTop: "2vh", marginBottom: "2vh" }} raised>
+      <div
+        style={{
+          display: "flex",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            flex: 0.2,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <img
+            style={{
+              maxHeight: 140,
+              paddingLeft: "1vw",
+              // flex: 0.2,
+            }}
+            src={image}
+            alt="Category Logo"
+          />
+        </div>
         <div>
           <CardContent>
             <Typography>{orderItem}</Typography>
@@ -132,8 +149,6 @@ const CartItem = ({ image = categorylogo, orderItem = "Order Item" }) => {
             </Typography>
           </CardContent>
           <CardActions>
-            {/* TODO */}
-
             {!cart[orderItem] ? (
               <IconButton onClick={handleAddCart}>
                 <AddIcon />

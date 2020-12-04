@@ -54,26 +54,35 @@ export default function App() {
       // }, 120000); // 2 minutes
 
       //USE FOR DEVELOPMENT
-      db.collection("users")
-        .doc(user.email)
-        .get()
-        .then((doc) => {
-          dispatch({
-            type: "UPDATE_USERDOC",
-            userDoc: doc.data(),
-          });
-        })
-        .catch((error) => console.log(error));
+      const getUserDoc = () => {
+        db.collection("users")
+          .doc(user.email)
+          .get()
+          .then((doc) => {
+            if (doc.data()) {
+              // console.log("Got Data", doc.data());
+              dispatch({
+                type: "UPDATE_USERDOC",
+                userDoc: doc.data(),
+              });
+            } else {
+              // console.log("Retrying to get data");
+              getUserDoc();
+            }
+          })
+          .catch((error) => console.log(error));
+      };
+      getUserDoc();
     }
   }, [user]);
 
   useEffect(() => {
-    let menuSnapshot = [];
-
+    // fetch("https://canteen-server.herokuapp.com"); // TODO: uncomment it after working
     const unsubscribe = db.collection("menu").onSnapshot(
       (querySnapshot) => {
+        let menuSnapshot = [];
         querySnapshot.forEach((doc) => menuSnapshot.push(doc.data()));
-        console.log("menu updated", menuSnapshot);
+        // console.log("menu updated", menuSnapshot);
         dispatch({
           type: "UPDATE_MENU",
           menu: menuSnapshot,
@@ -100,6 +109,10 @@ export default function App() {
           type: "SET_USER",
           user: null,
         });
+        dispatch({
+          type: "UPDATE_USERDOC",
+          userDoc: {},
+        });
       }
     });
     return () => {
@@ -117,9 +130,9 @@ export default function App() {
       <div>
         <Navbar />
         <Switch>
-          <Route path="/about">
+          {/* <Route path="/about">
             <About />
-          </Route>
+          </Route> */}
           <Route path="/account">
             <Account />
           </Route>

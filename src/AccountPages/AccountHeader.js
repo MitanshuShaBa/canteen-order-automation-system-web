@@ -34,7 +34,10 @@ const AccountHeader = () => {
               </Typography>
             </Grid>
             <Grid item xs={12}>
-              <Typography align={mdUP ? "left" : "center"}>
+              <Typography
+                style={{ textTransform: "none" }}
+                align={mdUP ? "left" : "center"}
+              >
                 {user.providerData[0].email}
               </Typography>
             </Grid>

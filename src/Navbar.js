@@ -26,18 +26,18 @@ import logo from "./img/1986.jpg";
 import { Link, useHistory } from "react-router-dom";
 import { useStateValue } from "./StateProvider";
 
-const useStyles = makeStyles((_theme) => ({
+const useStyles = makeStyles((theme) => ({
   sideBar: {
     width: 250,
-    background: "#3fb0ac",
+    background: "#e6dbc8",
     height: "100%",
   },
   listIcon: {
-    color: "#11848d",
+    color: "darkslate",
     textDecoration: "none",
   },
   listText: {
-    color: "#11848d",
+    color: "darkslate",
     textDecoration: "none",
   },
   listItem: {
@@ -66,7 +66,7 @@ function Navbar() {
 
   const menuItems = [
     { listIcon: <Home />, listText: "Home", to: "/", display: true },
-    { listIcon: <Info />, listText: "About", to: "/about", display: true },
+    // { listIcon: <Info />, listText: "About", to: "/about", display: true },
     {
       listIcon: <AccountCircleIcon />,
       listText: "Account",
@@ -152,7 +152,7 @@ function Navbar() {
               KJSIEIT-Canteen
             </Link>
           </Typography>
-          <IconButton onClick={()=>history.push('/cart')}>
+          <IconButton onClick={() => history.push("/cart")}>
             <StyledBadge
               badgeContent={cart ? Object.keys(cart).length : 0}
               color="primary"

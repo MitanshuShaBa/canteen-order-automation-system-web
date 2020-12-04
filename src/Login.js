@@ -2,7 +2,7 @@ import { Button, Container, Input } from "@material-ui/core";
 import React from "react";
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { auth, provider } from "./firebase";
+import { auth, db, provider } from "./firebase";
 
 const Login = () => {
   let history = useHistory();
@@ -22,8 +22,7 @@ const Login = () => {
       .signInWithEmailAndPassword(state.email, state.password)
       .then((authUser) => {
         if (authUser) {
-          console.log(authUser);
-          console.log("logged in", authUser.user.providerData[0].email);
+          console.log("logged in", authUser.user.email);
           history.push("/");
         }
       })
@@ -38,9 +37,28 @@ const Login = () => {
       .signInWithPopup(provider)
       .then((authUser) => {
         if (authUser) {
-          console.log(authUser);
-          console.log("logged in", authUser.user.providerData[0].email);
+          console.log("logged in", authUser.user.email);
           history.push("/");
+          const userRef = db.collection("users").doc(authUser.user.email);
+          userRef.get().then((doc) => {
+            if (!doc.exists) {
+              db.collection("users").doc(authUser.user.email).set(
+                {
+                  cart: {},
+                  email: authUser.user.email,
+                  fav_items: [],
+                  name: authUser.user.displayName,
+                  orders: [],
+                  phone: authUser.user.phoneNumber,
+                  uid: authUser.user.uid,
+                  role: "student",
+                },
+                { merge: true }
+              );
+            } else {
+              console.log("Document data:", doc.data());
+            }
+          });
         }
       })
       .catch((error) => {

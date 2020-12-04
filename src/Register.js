@@ -2,8 +2,13 @@ import React, { useState } from "react";
 import {
   Button,
   Container,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
   Input,
   makeStyles,
+  Radio,
+  RadioGroup,
   Typography,
 } from "@material-ui/core";
 import { auth, db, FieldValue, provider } from "./firebase";
@@ -26,6 +31,7 @@ const Register = () => {
     email: "",
     number: "",
     password: "",
+    role: "student",
   });
 
   auth.onAuthStateChanged((user) => {
@@ -49,7 +55,7 @@ const Register = () => {
       auth
         .createUserWithEmailAndPassword(state.email, state.password)
         .then((authResponse) => {
-          console.log("logged in");
+          console.log("logged in as", state.email);
           authResponse.user.updateProfile({
             displayName: state.name,
             photoURL:
@@ -65,6 +71,7 @@ const Register = () => {
               orders: [],
               phone: state.number,
               uid: authResponse.user.uid,
+              role: state.role,
             },
             { merge: true }
           );
@@ -97,87 +104,141 @@ const Register = () => {
     auth
       .signInWithPopup(provider)
       .then((auth) => {
-        console.log("logged in", auth.user.providerData[0].email);
+        console.log("logged in", auth.user.email);
 
         let user = auth.user;
         let uid = user.uid;
         let name = user.displayName;
         let number = user.phoneNumber;
-        let email = user.providerData[0].email;
+        let email = user.email;
 
-        db.collection("users").doc(email).set(
-          {
-            cart: {},
-            email,
-            fav_items: [],
-            name,
-            orders: [],
-            phone: number,
-            uid,
-          },
-          { merge: true }
-        );
+        const userRef = db.collection("users").doc(email);
+        userRef
+          .get()
+          .then((doc) => {
+            if (!doc.exists) {
+              db.collection("users").doc(email).set(
+                {
+                  cart: {},
+                  email,
+                  fav_items: [],
+                  name,
+                  orders: [],
+                  phone: number,
+                  uid,
+                  role: "student",
+                },
+                { merge: true }
+              );
+            } else {
+              console.log("Document data:", doc.data());
+            }
+          })
+          .catch((err) => {
+            console.log("Error getting document", err);
+          });
       })
       .catch((e) => alert(e.message));
   };
 
   return (
-    <Container maxWidth="sm">
-      <div style={{ marginTop: "5vh" }}></div>
-      <Typography
-        color="secondary"
-        variant="h3"
-        style={{ alignItems: "center" }}
-      >
-        Create Account
-      </Typography>
-      <form autoComplete="off">
-        <Input
-          color="secondary"
-          name="name"
-          placeholder="Name"
-          fullWidth
-          required
-          value={state.name}
-          onChange={handleChange}
-        />
-        <Input
-          color="secondary"
-          name="email"
-          placeholder="Email"
-          fullWidth
-          type="email"
-          value={state.email}
-          onChange={handleChange}
-        />
-        <Input
-          color="secondary"
-          className={classes.numberField}
-          name="number"
-          placeholder="Phone Number"
-          fullWidth
-          required
-          type="tel"
-          value={state.number}
-          onChange={handleChange}
-        />
-        <Input
-          color="secondary"
-          name="password"
-          placeholder="Password"
-          fullWidth
-          type="password"
-          value={state.password}
-          onChange={handleChange}
-        />
-        <Button color="secondary" type="submit" onClick={handleSubmit}>
-          Register
-        </Button>
-        <Button color="secondary" type="submit" onClick={handleSubmitGoogle}>
-          Register With Google
-        </Button>
-      </form>
-    </Container>
+    <>
+      <Container maxwidth="md">
+        <div style={{ marginTop: "5vh" }}></div>
+        <Typography color="secondary" variant="h3">
+          Create Account
+        </Typography>
+        <form autoComplete="off">
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <Input
+              color="secondary"
+              name="name"
+              placeholder="Name"
+              // fullWidth
+              required
+              value={state.name}
+              onChange={handleChange}
+            />
+            <Input
+              color="secondary"
+              name="email"
+              placeholder="Email"
+              // fullWidth
+              type="email"
+              value={state.email}
+              onChange={handleChange}
+            />
+            <Input
+              color="secondary"
+              className={classes.numberField}
+              name="number"
+              placeholder="Phone Number"
+              // fullWidth
+              required
+              type="tel"
+              value={state.number}
+              onChange={handleChange}
+            />
+            <Input
+              color="secondary"
+              name="password"
+              placeholder="Password"
+              // fullWidth
+              type="password"
+              value={state.password}
+              onChange={handleChange}
+            />
+            <FormControl style={{ marginTop: 4 }} component="fieldset">
+              <FormLabel color="secondary" component="legend">
+                Role
+              </FormLabel>
+              <RadioGroup
+                aria-label="role"
+                name="role"
+                value={state.role}
+                onChange={handleChange}
+              >
+                <FormControlLabel
+                  value="student"
+                  control={<Radio />}
+                  label="Student"
+                />
+                <FormControlLabel
+                  value="faculty"
+                  control={<Radio />}
+                  label="Faculty"
+                />
+              </RadioGroup>
+            </FormControl>
+          </div>
+          <div
+            style={{
+              marginTop: "2vh",
+              display: "flex",
+            }}
+          >
+            <Button
+              style={{ margin: "1vh" }}
+              variant="contained"
+              color="secondary"
+              type="submit"
+              onClick={handleSubmit}
+            >
+              Register
+            </Button>
+            <Button
+              style={{ margin: "1vh" }}
+              variant="contained"
+              color="secondary"
+              type="submit"
+              onClick={handleSubmitGoogle}
+            >
+              Register With Google
+            </Button>
+          </div>
+        </form>
+      </Container>
+    </>
   );
 };
 

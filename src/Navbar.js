@@ -17,7 +17,6 @@ import MenuIcon from "@material-ui/icons/Menu";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import CreateIcon from "@material-ui/icons/Create";
 import VpnKeyIcon from "@material-ui/icons/VpnKey";
-import Info from "@material-ui/icons/Info";
 import Home from "@material-ui/icons/Home";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCartOutlined";
 import MobilRightMenuSlider from "@material-ui/core/Drawer";
@@ -26,7 +25,7 @@ import logo from "./img/1986.jpg";
 import { Link, useHistory } from "react-router-dom";
 import { useStateValue } from "./StateProvider";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   sideBar: {
     width: 250,
     background: "#e6dbc8",
@@ -93,7 +92,7 @@ function Navbar() {
     },
   ];
 
-  const sideBar = (slider) => (
+  const sideBar = () => (
     <Box className={classes.sideBar} onClick={toggleSidebar("right", false)}>
       <List>
         {menuItems.map(

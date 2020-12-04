@@ -1,5 +1,4 @@
 import {
-  Box,
   Card,
   CardActionArea,
   CardContent,
@@ -7,11 +6,10 @@ import {
   makeStyles,
   Typography,
 } from "@material-ui/core";
-import { Info } from "@material-ui/icons";
 import React from "react";
 import categorylogo from "./img/3223367.jpg";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     width: 170,
   },

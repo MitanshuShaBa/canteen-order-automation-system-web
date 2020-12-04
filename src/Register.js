@@ -11,10 +11,10 @@ import {
   RadioGroup,
   Typography,
 } from "@material-ui/core";
-import { auth, db, FieldValue, provider } from "./firebase";
+import { auth, db, provider } from "./firebase";
 import { useHistory } from "react-router-dom";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   numberField: {
     "& input::-webkit-clear-button, & input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button": {
       display: "none",

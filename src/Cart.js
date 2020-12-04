@@ -1,13 +1,12 @@
 import { Button, Container, Typography } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import CartItem from "./CartItem";
 import { db, FieldValue } from "./firebase";
 import OrderItem from "./OrderItem";
 import { useStateValue } from "./StateProvider";
 
 const Cart = () => {
-  const [{ user, cart, menu, pendingPayments }, dispatch] = useStateValue();
+  const [{ user, cart, menu }, dispatch] = useStateValue();
   const [total, setTotal] = useState(0);
   const [menuFiltered, setMenuFiltered] = useState(menu);
   const [orderDetail, setOrderDetail] = useState({});
@@ -43,6 +42,7 @@ const Cart = () => {
       if (cartKeys.includes(currItem.name)) {
         return true;
       }
+      return false;
     });
 
     setMenuFiltered(menuItems);

@@ -2,23 +2,19 @@ import {
   Card,
   CardActions,
   CardContent,
-  CardMedia,
-  Grid,
   IconButton,
   Input,
   makeStyles,
   Typography,
-  useMediaQuery,
-  useTheme,
 } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import categorylogo from "./img/3223367.jpg";
 import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
 import { useStateValue } from "./StateProvider";
-import { db, storage } from "./firebase";
+import { db } from "./firebase";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   numberField: {
     "& input::-webkit-clear-button, & input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button": {
       display: "none",
@@ -33,8 +29,7 @@ const OrderItem = ({
   category = "south indian",
   isCart = false,
 }) => {
-  const [{ user, cart, menu }, dispatch] = useStateValue();
-  const [url, setUrl] = useState(categorylogo);
+  const [{ user, cart }, dispatch] = useStateValue();
   const [quantity, setQuantity] = useState(1);
   let classes = useStyles();
   let timerTime = 1000;
@@ -43,16 +38,6 @@ const OrderItem = ({
   // const theme = useTheme();
   // const tabletMediaQuery = useMediaQuery(theme.breakpoints.up("md"));
   // console.log(tabletMediaQuery);
-
-  useEffect(() => {
-    if (image !== "") {
-      const gsReference = storage.refFromURL(image);
-      gsReference
-        .getDownloadURL()
-        .then((url) => setUrl(url))
-        .catch((e) => console.log(e));
-    }
-  }, []);
 
   useEffect(() => {
     if (isCart) {

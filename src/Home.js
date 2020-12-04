@@ -20,7 +20,7 @@ const Home = () => {
   const [categorySelected, setCategorySelected] = useState(false);
 
   useEffect(() => {
-    if (categorySelected == false) {
+    if (categorySelected === false) {
       setMenuFiltered(menu);
     }
   }, [menu, categorySelected]);
@@ -41,7 +41,7 @@ const Home = () => {
   const handleCategory = (category) => {
     let filtered;
     filtered = menu.filter(
-      (menuItem) => menuItem.category.toLowerCase() == category.toLowerCase()
+      (menuItem) => menuItem.category.toLowerCase() === category.toLowerCase()
     );
     setMenuFiltered(filtered);
     setCategorySelected(true);

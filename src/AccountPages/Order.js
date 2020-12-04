@@ -1,6 +1,5 @@
 import {
   Card,
-  CardActions,
   CardContent,
   Collapse,
   IconButton,
@@ -15,7 +14,6 @@ import {
 import React, { useEffect, useRef, useState } from "react";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
-import { db } from "../firebase";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -129,7 +127,7 @@ const Order = ({ order }) => {
                     Paid
                   </StyledTableCell>
                   <StyledTableCell align="right">
-                    {order.payment_status == "paid" ? "Yes" : "No"}
+                    {order.payment_status === "paid" ? "Yes" : "No"}
                   </StyledTableCell>
                 </StyledTableRow>
                 <StyledTableRow>

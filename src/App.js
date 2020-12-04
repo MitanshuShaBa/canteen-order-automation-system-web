@@ -15,44 +15,11 @@ import Navbar from "./Navbar";
 import Login from "./Login";
 import Cart from "./Cart";
 
-//  useEffect(() => {
-//    if (user) {
-//      let userDocument = db.collection("users").doc(user.email).get();
-//      dispatch({
-//        type: "UPDATE_USERDOC",
-//        userDoc: userDocument,
-//      });
-//    }
-//  }, [user]);
-
-function getUserDoc(email) {
-  let userDoc;
-  db.collection("users")
-    .doc(email)
-    .get()
-    .then((doc) => doc.data())
-    .catch((error) => console.log(error));
-}
-
 export default function App() {
-  const [{ user, cart, userDoc }, dispatch] = useStateValue();
+  const [{ user }, dispatch] = useStateValue();
 
   useEffect(() => {
     if (user) {
-      // USE FOR PRODUCTION
-      // setInterval(() => {
-      //   db.collection("users")
-      //     .doc(user.email)
-      //     .get()
-      //     .then((doc) => {
-      //       dispatch({
-      //         type: "UPDATE_USERDOC",
-      //         userDoc: doc.data(),
-      //       });
-      //     })
-      //     .catch((error) => console.log(error));
-      // }, 120000); // 2 minutes
-
       //USE FOR DEVELOPMENT
       const getUserDoc = () => {
         db.collection("users")
@@ -77,7 +44,7 @@ export default function App() {
   }, [user]);
 
   useEffect(() => {
-    // fetch("https://canteen-server.herokuapp.com"); // TODO: uncomment it after working
+    fetch("https://canteen-server.herokuapp.com"); // TODO: uncomment it after working
     const unsubscribe = db.collection("menu").onSnapshot(
       (querySnapshot) => {
         let menuSnapshot = [];
@@ -131,9 +98,6 @@ export default function App() {
         <Navbar />
         <div style={{ minHeight: window.innerHeight }}>
           <Switch>
-            {/* <Route path="/about">
-            <About />
-          </Route> */}
             <Route path="/account">
               <Account />
             </Route>
@@ -174,9 +138,6 @@ export default function App() {
   );
 }
 
-function About() {
-  return <h2>About</h2>;
-}
 function Logout() {
   const [{ user }] = useStateValue();
   let history = useHistory();
@@ -195,6 +156,8 @@ function Logout() {
           history.replace("/");
         })
         .catch((e) => console.log(e));
+    } else {
+      history.replace("/");
     }
   };
 

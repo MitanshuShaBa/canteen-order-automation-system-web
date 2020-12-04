@@ -1,4 +1,4 @@
-import { Button, Container, Input } from "@material-ui/core";
+import { Button, Container, Input, Typography } from "@material-ui/core";
 import React from "react";
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
@@ -23,7 +23,7 @@ const Login = () => {
       .then((authUser) => {
         if (authUser) {
           console.log("logged in", authUser.user.email);
-          history.push("/");
+          history.replace("/");
         }
       })
       .catch((error) => {
@@ -38,7 +38,7 @@ const Login = () => {
       .then((authUser) => {
         if (authUser) {
           console.log("logged in", authUser.user.email);
-          history.push("/");
+          history.replace("/");
           const userRef = db.collection("users").doc(authUser.user.email);
           userRef.get().then((doc) => {
             if (!doc.exists) {
@@ -68,10 +68,15 @@ const Login = () => {
 
   return (
     <Container maxWidth="sm">
-      <h2>Login</h2>
+      <div style={{ marginTop: "5vh" }}></div>
+
+      <Typography color="secondary" variant="h3">
+        Login
+      </Typography>
 
       <form onSubmit={emailLogin}>
         <Input
+          autoFocus
           color="secondary"
           name="email"
           placeholder="Email"
@@ -89,11 +94,32 @@ const Login = () => {
           value={state.password}
           onChange={handleChange}
         />{" "}
-        <Button type="submit">Sign in with email</Button>
+        <div
+          style={{
+            marginTop: "2vh",
+            display: "flex",
+          }}
+        >
+          <Button
+            style={{ margin: "1vh" }}
+            variant="contained"
+            color="secondary"
+            type="submit"
+          >
+            Login
+          </Button>
+          <Button
+            style={{ margin: "1vh" }}
+            variant="contained"
+            color="secondary"
+            type="submit"
+            onClick={googleLogin}
+          >
+            Login With Google
+          </Button>
+        </div>
       </form>
       <br></br>
-
-      <button onClick={googleLogin}>Sign in with google</button>
     </Container>
   );
 };

@@ -152,7 +152,12 @@ function Navbar() {
               KJSIEIT-Canteen
             </Link>
           </Typography>
-          <IconButton onClick={() => history.push("/cart")}>
+          <IconButton
+            onClick={() => {
+              window.scrollTo(0, 0);
+              history.push("/cart");
+            }}
+          >
             <StyledBadge
               badgeContent={cart ? Object.keys(cart).length : 0}
               color="primary"

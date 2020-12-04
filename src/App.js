@@ -154,8 +154,8 @@ export default function App() {
         </Switch>
         <footer
           style={{
-            position: "relative",
-            left: 0,
+            position: 'fixed',
+            right: 0,
             bottom: 0,
             width: "100%",
             color: "white",
@@ -179,15 +179,28 @@ function Logout() {
   const [{ user }] = useStateValue();
   let history = useHistory();
 
+  useEffect(() => {
+    setTimeout(() => {
+      logout();
+    }, 1500);
+  }, []);
+
+  const logout = () => {
+    if (user) {
+      auth
+        .signOut()
+        .then(() => {
+          history.replace("/");
+        })
+        .catch((e) => console.log(e));
+    }
+  };
+
   return (
     <>
       <h2 style={{ paddingLeft: "2vw", paddingTop: "4vh" }}>
         You have been logged out
       </h2>
-      {setTimeout(() => {
-        user && auth.signOut();
-        history.push("/");
-      }, 1500)}
     </>
   );
 }

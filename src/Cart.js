@@ -3,11 +3,13 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import CartItem from "./CartItem";
 import { db, FieldValue } from "./firebase";
+import OrderItem from "./OrderItem";
 import { useStateValue } from "./StateProvider";
 
 const Cart = () => {
   const [{ user, cart, menu, pendingPayments }, dispatch] = useStateValue();
   const [total, setTotal] = useState(0);
+  const [menuFiltered, setMenuFiltered] = useState(menu);
   const [orderDetail, setOrderDetail] = useState({});
   // const paymentURL = "http://localhost:8000";
   const paymentURL = "https://canteen-server.herokuapp.com";
@@ -43,6 +45,7 @@ const Cart = () => {
       }
     });
 
+    setMenuFiltered(menuItems);
     let total = findTotalAmount(cartKeys, menuItems);
     setTotal(total);
   }, [cart]);
@@ -149,11 +152,13 @@ const Cart = () => {
       })
       .then((docRef) => {
         handlePaymentGateway(total, docRef.id, cart);
-        db.collection("users").doc(user.email).update({ cart: {} });
-        dispatch({
-          type: "UPDATE_CART",
-          cart: {},
-        });
+        setTimeout(() => {
+          db.collection("users").doc(user.email).update({ cart: {} });
+          dispatch({
+            type: "UPDATE_CART",
+            cart: {},
+          });
+        }, 1000);
         // db.collection("users")
         //   .doc(user.email)
         //   .collection("my_orders")
@@ -190,9 +195,22 @@ const Cart = () => {
         Cart
       </Typography>
 
-      {Object.keys(cart).map((item, key) => (
-        <CartItem orderItem={item} key={key} />
-      ))}
+      {menuFiltered.map(
+        ({ category, price, name, isAvailable, image_url }, key) => {
+          if (isAvailable) {
+            return (
+              <OrderItem
+                key={key}
+                category={category}
+                price={price}
+                orderItem={name}
+                image={image_url}
+                isCart
+              />
+            );
+          }
+        }
+      )}
 
       {user && Object.keys(cart).length !== 0 && (
         <>
@@ -205,15 +223,7 @@ const Cart = () => {
             style={{ marginTop: "2vh" }}
             onClick={handleBuyCart}
           >
-            Click To Buy ₹₹₹
-          </Button>
-          <Button
-            variant="contained"
-            color="secondary"
-            style={{ marginTop: "2vh" }}
-            onClick={handlePaymentGateway}
-          >
-            Payment Test
+            Click To Buy
           </Button>
         </>
       )}

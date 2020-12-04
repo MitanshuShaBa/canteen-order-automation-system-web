@@ -97,11 +97,14 @@ export default function AccountBody() {
         myOrders.sort((a, b) => b.placed_at.seconds - a.placed_at.seconds);
         setActiveOrders(myOrders);
       });
+
   }, []);
 
   return (
     <div>
-      <Typography variant="h4">My Active Orders</Typography>
+      <Typography variant="h4" style={{ marginTop: "4vh" }}>
+        My Active Orders
+      </Typography>
       <Divider style={{ marginTop: "1vh", marginBottom: "2vh" }} />
 
       {activeOrders.map((order) => (

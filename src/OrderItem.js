@@ -5,6 +5,7 @@ import {
   CardMedia,
   Grid,
   IconButton,
+  Input,
   makeStyles,
   Typography,
   useMediaQuery,
@@ -17,14 +18,28 @@ import RemoveIcon from "@material-ui/icons/Remove";
 import { useStateValue } from "./StateProvider";
 import { db, storage } from "./firebase";
 
+const useStyles = makeStyles((theme) => ({
+  numberField: {
+    "& input::-webkit-clear-button, & input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button": {
+      display: "none",
+    },
+  },
+}));
+
 const OrderItem = ({
   image = categorylogo,
   orderItem = "dosa",
   price = 15,
   category = "south indian",
+  isCart = false,
 }) => {
-  const [{ user, cart }, dispatch] = useStateValue();
+  const [{ user, cart, menu }, dispatch] = useStateValue();
   const [url, setUrl] = useState(categorylogo);
+  const [quantity, setQuantity] = useState(1);
+  let classes = useStyles();
+  let timerTime = 1000;
+  let inputTimer;
+
   // const theme = useTheme();
   // const tabletMediaQuery = useMediaQuery(theme.breakpoints.up("md"));
   // console.log(tabletMediaQuery);
@@ -38,6 +53,28 @@ const OrderItem = ({
         .catch((e) => console.log(e));
     }
   }, []);
+
+  useEffect(() => {
+    if (isCart) {
+      setQuantity(cart[orderItem]?.quantity);
+      // setQuantity(cart[orderItem]["quantity"]);
+    }
+  }, [user, cart]);
+
+  const updateQuantity = () => {
+    let item = cart[orderItem];
+    db.collection("users")
+      .doc(user.email)
+      .update({
+        cart: {
+          ...cart,
+          [orderItem]: {
+            ...item,
+            quantity,
+          },
+        },
+      });
+  };
 
   const handleAddCart = (e) => {
     e.preventDefault();
@@ -105,7 +142,8 @@ const OrderItem = ({
               // marginTop: "8",
               // borderRadius: "50%", //TODO: check border radius
             }}
-            src={url}
+            // src={url}
+            src={image !== "" ? image : categorylogo}
             alt={orderItem}
           />
         </div>
@@ -113,8 +151,34 @@ const OrderItem = ({
           <CardContent>
             <Typography>{orderItem}</Typography>
             {/* <Typography>{tabletMediaQuery}</Typography> */}
-            <Typography>₹{price}</Typography>
-            <Typography>{category}</Typography>
+            {!isCart && (
+              <>
+                <Typography>₹{price}</Typography>
+                <Typography>{category}</Typography>
+              </>
+            )}
+            {isCart && (
+              <>
+                <Typography>Quantity:</Typography>
+                <Input
+                  className={classes.numberField}
+                  value={quantity}
+                  type="number"
+                  onChange={(e) => setQuantity(parseInt(e.target.value))}
+                  onKeyUp={() => {
+                    clearTimeout(inputTimer);
+                    if (!isNaN(quantity)) {
+                      inputTimer = setTimeout(() => {
+                        updateQuantity();
+                      }, timerTime);
+                    }
+                  }}
+                />
+                <Typography>
+                  {quantity} X ₹{price} = ₹{quantity * price}
+                </Typography>
+              </>
+            )}
           </CardContent>
           <CardActions>
             {!cart[orderItem] ? (

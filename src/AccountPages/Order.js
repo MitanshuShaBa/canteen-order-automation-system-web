@@ -63,7 +63,9 @@ const Order = ({ order }) => {
   // }, []);
 
   useEffect(() => {
-    orderRef.current.scrollIntoView();
+    if (expanded) {
+      orderRef.current.scrollIntoView();
+    }
   }, [expanded]);
 
   return (
@@ -132,7 +134,7 @@ const Order = ({ order }) => {
                     Total
                   </StyledTableCell>
                   <StyledTableCell align="right">
-                    ₹{order.total_amount * 0.95}
+                    ₹{order.total_amount}
                   </StyledTableCell>
                 </StyledTableRow>
                 <StyledTableRow>

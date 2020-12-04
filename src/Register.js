@@ -36,7 +36,7 @@ const Register = () => {
 
   auth.onAuthStateChanged((user) => {
     if (user) {
-      history.push("/");
+      history.replace("/");
     }
   });
 
@@ -151,6 +151,7 @@ const Register = () => {
         <form autoComplete="off">
           <div style={{ display: "flex", flexDirection: "column" }}>
             <Input
+              autoFocus
               color="secondary"
               name="name"
               placeholder="Name"

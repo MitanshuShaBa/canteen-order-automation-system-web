@@ -1,6 +1,16 @@
-import { Button, Container, Typography } from "@material-ui/core";
+import {
+  Button,
+  Container,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Input,
+  Radio,
+  RadioGroup,
+  Typography,
+} from "@material-ui/core";
 import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { db, FieldValue } from "./firebase";
 import OrderItem from "./OrderItem";
 import { useStateValue } from "./StateProvider";
@@ -10,6 +20,7 @@ const Cart = () => {
   const [total, setTotal] = useState(0);
   const [menuFiltered, setMenuFiltered] = useState(menu);
   const [orderDetail, setOrderDetail] = useState({});
+  const [payMethod, setPayMethod] = useState("cash");
   // const paymentURL = "http://localhost:8000";
   const paymentURL = "https://canteen-server.herokuapp.com";
   const history = useHistory();
@@ -37,18 +48,28 @@ const Cart = () => {
 
   useEffect(() => {
     //calculate total
-    let cartKeys = Object.keys(cart);
-    let menuItems = menu.filter((currItem) => {
-      if (cartKeys.includes(currItem.name)) {
-        return true;
-      }
-      return false;
-    });
+    if (user) {
+      let cartKeys = Object.keys(cart);
+      let menuItems = menu.filter((currItem) => {
+        if (cartKeys.includes(currItem.name)) {
+          // console.log("in cart", currItem.name);
+          if (!currItem.isAvailable) {
+            // console.log("removing fromm cart", currItem.name);
+            cartKeys = cartKeys.filter((cartKey) => cartKey !== currItem.name);
+            removeFromCart(currItem.name);
+            return false;
+          }
+          return true;
+        }
+        return false;
+      });
+      // console.log("cart filtering", menuItems, cartKeys);
 
-    setMenuFiltered(menuItems);
-    let total = findTotalAmount(cartKeys, menuItems);
-    setTotal(total);
-  }, [cart]);
+      setMenuFiltered(menuItems);
+      let total = findTotalAmount(cartKeys, menuItems);
+      setTotal(total);
+    }
+  }, [cart, menu]);
 
   useEffect(() => {
     if (Object.keys(orderDetail).length > 0) {
@@ -85,7 +106,7 @@ const Cart = () => {
                   razorpay_payment_id,
                   payment_status: "paid",
                 });
-                history.push("/");
+                history.push("/account") && window.scrollTo(0, 0);
               }
             })
             .catch((err) => console.log(err));
@@ -103,14 +124,23 @@ const Cart = () => {
     let totalAmount = 0;
 
     cartKeys.map((cartItem) => {
-      let amountItem =
-        cart[cartItem]["quantity"] *
-        menuItems.find((menuItem) => menuItem.name === cartItem)["price"];
+      if (cart[cartItem]) {
+        let amountItem =
+          cart[cartItem]["quantity"] *
+          menuItems.find((menuItem) => menuItem.name === cartItem)["price"];
 
-      totalAmount += amountItem;
+        totalAmount += amountItem;
+      }
     });
 
     return totalAmount;
+  };
+
+  const removeFromCart = (itemName) => {
+    let updatedCart = cart;
+    delete updatedCart[itemName];
+
+    db.collection("users").doc(user.email).update({ cart: updatedCart });
   };
 
   const makeContent = (cartKeys, menuItems) => {
@@ -132,6 +162,7 @@ const Cart = () => {
       if (cartKeys.includes(currItem.name)) {
         return true;
       }
+      return false;
     });
 
     // console.log(cart, "is bought");
@@ -143,7 +174,7 @@ const Cart = () => {
       .add({
         bill: orderContent,
         ordered_by: user.email,
-        payment_type: "digital",
+        payment_type: payMethod,
         payment_status: "not paid",
         total_amount: total,
         placed_at: FieldValue.serverTimestamp(),
@@ -151,19 +182,22 @@ const Cart = () => {
         username: user.displayName,
       })
       .then((docRef) => {
-        handlePaymentGateway(total, docRef.id, cart);
+        payMethod === "digital" && handlePaymentGateway(total, docRef.id, cart);
         setTimeout(() => {
           db.collection("users").doc(user.email).update({ cart: {} });
           dispatch({
             type: "UPDATE_CART",
             cart: {},
           });
-        }, 5000);
+        }, 1000);
         // db.collection("users")
         //   .doc(user.email)
         //   .collection("my_orders")
         //   .add({ order_id: docRef.id });
         alert("Order placed successfully");
+        payMethod === "cash" &&
+          history.push("/account") &&
+          window.scrollTo(0, 0);
       });
   };
 
@@ -194,38 +228,65 @@ const Cart = () => {
       <Typography style={{ marginTop: "2vh" }} variant="h2">
         Cart
       </Typography>
-
-      {menuFiltered.map(
-        ({ category, price, name, isAvailable, image_url }, key) => {
-          if (isAvailable) {
-            return (
-              <OrderItem
-                key={key}
-                category={category}
-                price={price}
-                orderItem={name}
-                image={image_url}
-                isCart
-              />
-            );
-          }
-        }
+      {!user && (
+        <Typography variant="body1">
+          Please <Link to="/login">Log In</Link> first
+        </Typography>
       )}
 
+      {user &&
+        menuFiltered.map(
+          ({ category, price, name, isAvailable, image_url }, key) => {
+            if (isAvailable) {
+              return (
+                <OrderItem
+                  key={key}
+                  category={category}
+                  price={price}
+                  orderItem={name}
+                  image={image_url}
+                  isCart
+                />
+              );
+            }
+          }
+        )}
+
       {user && Object.keys(cart).length !== 0 && (
-        <>
+        <div style={{ display: "flex", flexDirection: "column" }}>
           <Typography style={{ marginTop: "4vh" }} variant="h5">
             Total: ₹{total}
           </Typography>
+          <FormControl
+            style={{ marginTop: 8, alignSelf: "flex-start" }}
+            component="fieldset"
+          >
+            <FormLabel color="secondary" component="legend">
+              Mode of Payment
+            </FormLabel>
+            <RadioGroup
+              aria-label="payMethod"
+              name="rolpayMethode"
+              value={payMethod}
+              onChange={(e) => setPayMethod(e.target.value)}
+            >
+              <FormControlLabel value="cash" control={<Radio />} label="Cash" />
+              <FormControlLabel
+                value="digital"
+                control={<Radio />}
+                label="Digital"
+              />
+            </RadioGroup>
+          </FormControl>
           <Button
             variant="contained"
             color="secondary"
-            style={{ marginTop: "2vh" }}
+            style={{ marginTop: "2vh", alignSelf: "flex-start" }}
             onClick={handleBuyCart}
           >
             Click To Buy
           </Button>
-        </>
+        </div>
       )}
       {user && Object.keys(cart).length === 0 && (
         <Typography variant="h6">Add something to Cart</Typography>

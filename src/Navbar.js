@@ -104,8 +104,8 @@ function Navbar() {
                 key={key}
                 onClick={() => {
                   toggleSidebar("right", false);
-                  window.scrollTo(0, 0);
                   history.push(listItem.to);
+                  window.scrollTo(0, 0);
                 }}
               >
                 <ListItemIcon className={classes.listIcon}>

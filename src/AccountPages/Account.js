@@ -1,4 +1,4 @@
-import { Container } from "@material-ui/core";
+import { Container, Typography } from "@material-ui/core";
 import React from "react";
 import AccountBody from "./AccountBody";
 import AccountHeader from "./AccountHeader";
@@ -16,9 +16,9 @@ const Account = () => {
           <AccountBody />
         </>
       ) : (
-        <h2>
-          <Link to="/login">Login</Link>
-        </h2>
+        <Typography variant="body1">
+          Please <Link to="/login">Log In</Link> first
+        </Typography>
       )}
     </Container>
   );

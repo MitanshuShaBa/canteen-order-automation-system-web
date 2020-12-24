@@ -20,7 +20,6 @@ export default function App() {
 
   useEffect(() => {
     if (user) {
-      //USE FOR DEVELOPMENT
       const getUserDoc = () => {
         db.collection("users")
           .doc(user.email)
@@ -126,7 +125,7 @@ export default function App() {
             width: "100%",
             color: "white",
             textAlign: "right",
-            marginTop: "15vh",
+            marginTop: "2vh",
           }}
         >
           <a href="https://www.freepik.com/vectors/logo">

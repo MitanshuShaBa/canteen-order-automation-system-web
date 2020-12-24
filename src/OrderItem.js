@@ -6,6 +6,8 @@ import {
   Input,
   makeStyles,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import categorylogo from "./img/3223367.jpg";
@@ -35,9 +37,8 @@ const OrderItem = ({
   let timerTime = 1000;
   let inputTimer;
 
-  // const theme = useTheme();
-  // const tabletMediaQuery = useMediaQuery(theme.breakpoints.up("md"));
-  // console.log(tabletMediaQuery);
+  const theme = useTheme();
+  const tabletMediaQuery = useMediaQuery(theme.breakpoints.up("md"));
 
   useEffect(() => {
     if (isCart) {
@@ -111,7 +112,7 @@ const OrderItem = ({
         <div
           style={{
             display: "flex",
-            flex: "0.2 ",
+            flex: tabletMediaQuery ? "0.2" : "0.5",
             justifyContent: "center",
             alignItems: "center",
           }}
@@ -132,7 +133,7 @@ const OrderItem = ({
             alt={orderItem}
           />
         </div>
-        <div>
+        <div style={{ flex: !tabletMediaQuery && "0.5" }}>
           <CardContent>
             <Typography>{orderItem}</Typography>
             {/* <Typography>{tabletMediaQuery}</Typography> */}
@@ -158,9 +159,13 @@ const OrderItem = ({
                       }, timerTime);
                     }
                   }}
+                  onBlur={() => {
+                    setQuantity(cart[orderItem]?.quantity);
+                  }}
                 />
                 <Typography>
-                  {quantity} X ₹{price} = ₹{quantity * price}
+                  {quantity ? quantity : "-"} X ₹{price} = ₹
+                  {quantity ? quantity * price : "-"}
                 </Typography>
               </>
             )}

@@ -96,7 +96,7 @@ const Home = () => {
             <Grid item>
               <CategoryCard
                 title="Beverages"
-                imageURL="https://storage.googleapis.com/kjsieit-canteen.appspot.com/menu_items/beverages/pepsi.jpg"
+                imageURL="https://storage.googleapis.com/kjsieit-canteen.appspot.com/menu_items/beverages/coffee.jpg"
                 onCategory={handleCategory}
               />
             </Grid>

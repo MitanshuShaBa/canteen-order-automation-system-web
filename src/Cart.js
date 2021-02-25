@@ -22,7 +22,7 @@ const Cart = () => {
   const [orderDetail, setOrderDetail] = useState({});
   const [payMethod, setPayMethod] = useState("cash");
   // const paymentURL = "http://localhost:8000";
-  const paymentURL = "https://canteen-server.herokuapp.com";
+  const backendURL = "https://canteen-server.herokuapp.com";
   const history = useHistory();
 
   useEffect(() => {
@@ -87,7 +87,7 @@ const Cart = () => {
           razorpay_order_id,
           razorpay_signature,
         }) => {
-          fetch(paymentURL + "/validate", {
+          fetch(backendURL + "/validate", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -202,7 +202,7 @@ const Cart = () => {
   };
 
   const handlePaymentGateway = (amount, orderId, cart) => {
-    fetch(paymentURL + "/order", {
+    fetch(backendURL + "/order", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

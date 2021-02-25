@@ -43,7 +43,7 @@ export default function App() {
   }, [user]);
 
   useEffect(() => {
-    fetch("https://canteen-server.herokuapp.com"); // TODO: uncomment it after working
+    fetch("https://canteen-server.herokuapp.com");
     const unsubscribe = db.collection("menu").onSnapshot(
       (querySnapshot) => {
         let menuSnapshot = [];

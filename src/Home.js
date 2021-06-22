@@ -27,6 +27,7 @@ const Home = () => {
 
   useEffect(() => {
     handleSearch();
+  // eslint-disable-next-line
   }, [searchItem]);
 
   const handleSearch = () => {
@@ -147,6 +148,7 @@ const Home = () => {
         }}
       >
         {menuFiltered.map(
+          // eslint-disable-next-line
           ({ category, price, name, isAvailable, image_url }, key) => {
             if (isAvailable) {
               return (

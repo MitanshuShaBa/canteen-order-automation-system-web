@@ -4,7 +4,6 @@ import {
   FormControl,
   FormControlLabel,
   FormLabel,
-  Input,
   Radio,
   RadioGroup,
   Typography,
@@ -44,6 +43,7 @@ const Cart = () => {
         unsubscribe();
       };
     }
+  // eslint-disable-next-line
   }, [user]);
 
   useEffect(() => {
@@ -69,6 +69,7 @@ const Cart = () => {
       let total = findTotalAmount(cartKeys, menuItems);
       setTotal(total);
     }
+  // eslint-disable-next-line
   }, [cart, menu]);
 
   useEffect(() => {
@@ -118,11 +119,13 @@ const Cart = () => {
       const rzp1 = new window.Razorpay(options);
       rzp1.open();
     }
+  // eslint-disable-next-line
   }, [orderDetail]);
 
   const findTotalAmount = (cartKeys, menuItems) => {
     let totalAmount = 0;
 
+    // eslint-disable-next-line
     cartKeys.map((cartItem) => {
       if (cart[cartItem]) {
         let amountItem =
@@ -145,14 +148,14 @@ const Cart = () => {
 
   const makeContent = (cartKeys, menuItems) => {
     let content = {};
-    cartKeys.map((cartItem) => {
+    cartKeys.map((cartItem) => (
       content[cartItem] = {
         quantity: cart[cartItem]["quantity"],
         price: menuItems.find((menuItem) => menuItem.name === cartItem)[
           "price"
         ],
-      };
-    });
+      }
+    ));
     return content;
   };
 
@@ -236,6 +239,7 @@ const Cart = () => {
 
       {user &&
         menuFiltered.map(
+          // eslint-disable-next-line
           ({ category, price, name, isAvailable, image_url }, key) => {
             if (isAvailable) {
               return (

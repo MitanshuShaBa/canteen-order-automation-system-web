@@ -43,8 +43,8 @@ const OrderItem = ({
   useEffect(() => {
     if (isCart) {
       setQuantity(cart[orderItem]?.quantity);
-      // setQuantity(cart[orderItem]["quantity"]);
     }
+  // eslint-disable-next-line
   }, [user, cart]);
 
   const updateQuantity = () => {

@@ -40,6 +40,7 @@ export default function App() {
       };
       getUserDoc();
     }
+  // eslint-disable-next-line
   }, [user]);
 
   useEffect(() => {
@@ -57,6 +58,7 @@ export default function App() {
       (error) => console.log(error)
     );
     return () => unsubscribe();
+  // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -84,6 +86,7 @@ export default function App() {
     return () => {
       unsubscribe();
     };
+  // eslint-disable-next-line
   }, []);
 
   // console.log("user is", user && user.providerData[0].email);
@@ -145,6 +148,7 @@ function Logout() {
     setTimeout(() => {
       logout();
     }, 1500);
+  // eslint-disable-next-line
   }, []);
 
   const logout = () => {

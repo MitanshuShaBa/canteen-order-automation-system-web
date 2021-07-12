@@ -11,13 +11,27 @@ import CategoryCard from "./CategoryCard";
 import OrderItem from "./OrderItem";
 import { useStateValue } from "./StateProvider";
 import SearchIcon from "@material-ui/icons/Search";
+import { db } from "./firebase";
 
 const Home = () => {
   const [{ user, menu }] = useStateValue();
   let theme = useTheme();
   const [searchItem, setSearchItem] = useState("");
   const [menuFiltered, setMenuFiltered] = useState(menu);
+  const [categories, setCategories] = useState([]);
   const [categorySelected, setCategorySelected] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = db.collection("categories").onSnapshot((snapshot) => {
+      const categories = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setCategories(categories);
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   useEffect(() => {
     if (categorySelected === false) {
@@ -27,7 +41,7 @@ const Home = () => {
 
   useEffect(() => {
     handleSearch();
-  // eslint-disable-next-line
+    // eslint-disable-next-line
   }, [searchItem]);
 
   const handleSearch = () => {
@@ -66,7 +80,18 @@ const Home = () => {
       {/* <HomeCarousel /> */}
       <div>
         <Grid container item justify="center" spacing={2}>
-          <Grid container item xs={6} sm={3} justify="center">
+          {categories.map((category) => (
+            <Grid container item xs={6} sm={3} justify="center">
+              <Grid item>
+                <CategoryCard
+                  title={category.name}
+                  imageURL={category.image_url}
+                  onCategory={handleCategory}
+                />
+              </Grid>
+            </Grid>
+          ))}
+          {/* <Grid container item xs={6} sm={3} justify="center">
             <Grid item>
               <CategoryCard
                 title="Snacks"
@@ -101,7 +126,7 @@ const Home = () => {
                 onCategory={handleCategory}
               />
             </Grid>
-          </Grid>
+          </Grid> */}
         </Grid>
       </div>
       <div

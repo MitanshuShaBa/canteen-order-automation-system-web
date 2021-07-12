@@ -81,7 +81,14 @@ const Home = () => {
       <div>
         <Grid container item justify="center" spacing={2}>
           {categories.map((category) => (
-            <Grid container item xs={6} sm={3} justify="center">
+            <Grid
+              container
+              item
+              xs={6}
+              sm={3}
+              justify="center"
+              key={category.name}
+            >
               <Grid item>
                 <CategoryCard
                   title={category.name}
@@ -188,6 +195,8 @@ const Home = () => {
                   estimatedTime={estimated_time}
                 />
               );
+            } else {
+              return null;
             }
           }
         )}

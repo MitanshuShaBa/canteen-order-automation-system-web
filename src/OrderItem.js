@@ -18,9 +18,10 @@ import { db } from "./firebase";
 
 const useStyles = makeStyles(() => ({
   numberField: {
-    "& input::-webkit-clear-button, & input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button": {
-      display: "none",
-    },
+    "& input::-webkit-clear-button, & input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button":
+      {
+        display: "none",
+      },
   },
 }));
 
@@ -28,6 +29,7 @@ const OrderItem = ({
   image = categorylogo,
   orderItem = "dosa",
   price = 15,
+  estimatedTime = 1,
   category = "south indian",
   isCart = false,
 }) => {
@@ -44,7 +46,7 @@ const OrderItem = ({
     if (isCart) {
       setQuantity(cart[orderItem]?.quantity);
     }
-  // eslint-disable-next-line
+    // eslint-disable-next-line
   }, [user, cart]);
 
   const updateQuantity = () => {
@@ -141,6 +143,11 @@ const OrderItem = ({
               <>
                 <Typography>₹{price}</Typography>
                 <Typography>{category}</Typography>
+                <Typography>
+                  {estimatedTime === 1
+                    ? `${estimatedTime} minute`
+                    : `${estimatedTime} minutes`}
+                </Typography>
               </>
             )}
             {isCart && (

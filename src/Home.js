@@ -85,7 +85,6 @@ const Home = () => {
               <Grid item>
                 <CategoryCard
                   title={category.name}
-                  imageURL={category.image_url}
                   onCategory={handleCategory}
                 />
               </Grid>
@@ -174,7 +173,10 @@ const Home = () => {
       >
         {menuFiltered.map(
           // eslint-disable-next-line
-          ({ category, price, name, isAvailable, image_url }, key) => {
+          (
+            { category, price, name, isAvailable, image_url, estimated_time },
+            key
+          ) => {
             if (isAvailable) {
               return (
                 <OrderItem
@@ -183,6 +185,7 @@ const Home = () => {
                   price={price}
                   orderItem={name}
                   image={image_url}
+                  estimatedTime={estimated_time}
                 />
               );
             }

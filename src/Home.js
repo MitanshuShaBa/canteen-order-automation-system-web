@@ -92,6 +92,11 @@ const Home = () => {
               <Grid item>
                 <CategoryCard
                   title={category.name}
+                  imageURL={
+                    category.image_url.startsWith("gs")
+                      ? undefined
+                      : category.image_url
+                  }
                   onCategory={handleCategory}
                 />
               </Grid>

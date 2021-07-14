@@ -93,9 +93,9 @@ const Home = () => {
                 <CategoryCard
                   title={category.name}
                   imageURL={
-                    category.image_url.startsWith("gs")
-                      ? undefined
-                      : category.image_url
+                    category?.image_url
+                      ? category.image_url
+                      : undefined
                   }
                   onCategory={handleCategory}
                 />

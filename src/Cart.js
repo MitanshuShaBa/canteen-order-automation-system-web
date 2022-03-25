@@ -275,11 +275,13 @@ const Cart = () => {
               onChange={(e) => setPayMethod(e.target.value)}
             >
               <FormControlLabel value="cash" control={<Radio />} label="Cash" />
-//               <FormControlLabel
-//                 value="digital"
-//                 control={<Radio />}
-//                 label="Digital"
-//               />
+                {/* 
+                <FormControlLabel
+                value="digital"
+                control={<Radio />}
+                label="Digital"
+                />
+                  */}
             </RadioGroup>
           </FormControl>
           <Button

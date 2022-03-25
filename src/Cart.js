@@ -4,7 +4,7 @@ import {
   FormControl,
   FormControlLabel,
   FormLabel,
-//   Radio,
+  Radio,
   RadioGroup,
   Typography,
 } from "@material-ui/core";
@@ -275,13 +275,13 @@ const Cart = () => {
               onChange={(e) => setPayMethod(e.target.value)}
             >
               <FormControlLabel value="cash" control={<Radio />} label="Cash" />
-                {/* 
-                <FormControlLabel
+                
+                {/* <FormControlLabel
                 value="digital"
                 control={<Radio />}
                 label="Digital"
-                />
-                  */}
+                /> */}
+                 
             </RadioGroup>
           </FormControl>
           <Button
